@@ -1,3 +1,5 @@
+package main
+
 import io.getquill._
 import io.getquill.cassandrazio.Quill
 import zio.Console.printLine

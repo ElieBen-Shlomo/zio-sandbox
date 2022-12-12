@@ -1,10 +1,13 @@
+package main
+
+import zio.*
+import zio.http.ChannelEvent.{ChannelRead, ChannelUnregistered, UserEventTriggered}
+import zio.http.*
+import zio.http.model.Method
+import zio.http.socket.{WebSocketChannelEvent, WebSocketFrame}
+import zio.http.ChannelEvent.UserEvent.*
+
 import Data.{DataService, User}
-import zhttp.http.{Http, Method, Request, Response}
-import zhttp.service.ChannelEvent
-import zhttp.service.ChannelEvent.UserEvent.{HandshakeComplete, HandshakeTimeout}
-import zhttp.service.ChannelEvent.{ChannelRead, ChannelUnregistered, UserEventTriggered}
-import zhttp.socket.{WebSocketChannelEvent, WebSocketFrame}
-import zio.ZIO
 import java.time.Instant
 
 object WebSocket {
@@ -13,7 +16,7 @@ object WebSocket {
 
       case ChannelEvent(ch, ChannelRead(WebSocketFrame.Text(msg))) =>
         ZIO.logInfo(s"Received message $msg") *>
-          DataService.insertPerson(User("DB TEST", Instant.now, "message","SessionId", "WAITING")) *>
+          DataService.insertPerson(User("DB TEST", Instant.now, msg,"SessionId", "WAITING")) *>
           ch.writeAndFlush(WebSocketFrame.text(s"inserted $msg into db"))
 
       case ChannelEvent(_, UserEventTriggered(event)) =>
