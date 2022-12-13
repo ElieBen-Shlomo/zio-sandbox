@@ -1,4 +1,6 @@
-create table if not exists user (
+USE chatbox;
+
+CREATE TABLE IF NOT EXISTS USER (
 	username text,
 	session_id text,
 	date_and_time timestamp,
