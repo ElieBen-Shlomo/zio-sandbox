@@ -17,9 +17,6 @@ object HttpServer:
   private val websocket: Http[DataService, Nothing, Request, Response] = Http.collectZIO[Request] {
     case Method.GET -> !! / "ws" => WebSocket.beginWebsocketConnection.toSocketApp.toResponse
   }
-  
-  private val allRoutes: Http[DataService, Nothing, Request, Response] =
-      AuthServer.jwtRoutes ++ websocket
 
   private val port = 9000
 
@@ -28,4 +25,4 @@ object HttpServer:
 
   val startServer =
     Console.printLine(s"Starting server on http://localhost:$port") *>
-      Server.serve(allRoutes)
+      Server.serve(websocket)
