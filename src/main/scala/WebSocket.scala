@@ -1,13 +1,12 @@
 package main
 
-import zio.*
+import cassandra_quill.Data.{DataService, User}
 import zio.http.ChannelEvent.{ChannelRead, ChannelUnregistered, UserEventTriggered}
-import zio.http.*
-import zio.http.model.Method
 import zio.http.socket.{WebSocketChannelEvent, WebSocketFrame}
-import zio.http.ChannelEvent.UserEvent.*
+import zio.http.{ChannelEvent, Http}
+import zio.ZIO
+import zio.http.ChannelEvent.UserEvent.{HandshakeComplete, HandshakeTimeout}
 
-import Data.{DataService, User}
 import java.time.Instant
 
 object WebSocket {
